@@ -10,6 +10,7 @@ const carSchema = new mongoose.Schema({
     transmission: String,
     drivetrain: String,
     body: String,
+    imagelink: String,
     tags: [String]
 })
 
@@ -21,13 +22,13 @@ function validateCar(car) {
         model: Joi.string(),
         // Year of car must be at least 1880
         year: Joi.number().integer().min(1880),
-        // Fuel type string must be at least 2 letters (Diesel, Petrol, EV, Hybrid)
-        fuel: Joi.string().min(2),
+        fuel: Joi.string(),
         engine_size: Joi.number().min(0),
         transmission: Joi.string(),
         // Must be 3 characters e.g. FWD, RWD, AWD, 4WD etc...
         drivetrain: Joi.string().min(3).max(3),
         body: Joi.string(),
+        imagelink: Joi.string(),
         tags: Joi.array().items(Joi.string())
     })
     return Schema.validate(car);

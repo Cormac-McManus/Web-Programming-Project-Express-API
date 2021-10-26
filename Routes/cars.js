@@ -99,6 +99,9 @@ router.get('/:id', async (req,res) => {
     const id = req.params.id;
 
     const car = await Car.findById(id)
+    .catch((error) => 
+    res.status(404).send({ message: 'not found (' + error + ')'}));
+    
 
     if (!car) {
         res.status(404);
@@ -106,12 +109,18 @@ router.get('/:id', async (req,res) => {
         return
     }
 
+    
+
     res.json(car);
+    return;
 })
 
 router.delete('/:id', async (req,res) => {
     const id = req.params.id;
     const car = await Car.findByIdAndDelete(id)
+    .catch((error)  => 
+    res.status(404).send({ message: 'not found' + error})
+    );
     const cars = await Car.find();
 
     if (!car) {
@@ -123,14 +132,21 @@ router.delete('/:id', async (req,res) => {
 })
 
 router.put('/:id', async (req,res) => {
-    const id = req.params.id;
+    const id = req.params.id.toString();
     const result = validate(req.body);
+
+    const car = await Car.findById(id)
+    .catch((error) => 
+    res.status(404).send({ message: 'not found (' + error + ')'}));
+    
 
     if (result.error)
     {
         res.status(400).json(result.error);
+        console.log("BAD REQUEST!" + result.error)
         return;
     }
+
 
     Car.findByIdAndUpdate({_id: id}, {...req.body}).
     then((result) => {
@@ -141,13 +157,15 @@ router.put('/:id', async (req,res) => {
             res.status(404).send({ message: 'not found'})
         }
     })
-    .catch((error) => 
-    res.status(404).send({ message: 'not found' + error}));
+    .catch((error)  => 
+    res.status(404).send({ message: 'not found' + error})
+    );
+    
 
     if (!car) {
         res.status(404).json(`car with the ID {req.params.id} was not found`);
         return;
     }
-    res.send(car);
+    return;
 })
 module.exports = router;
