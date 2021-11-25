@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 const app = express();
 const port = 3000;
+const cors = require('cors');
+
+app.use(cors())
 
 mongoose.connect('mongodb://localhost:27017/carsDB', {
   "useNewUrlParser": true,

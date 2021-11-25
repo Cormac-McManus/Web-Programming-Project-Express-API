@@ -10,19 +10,20 @@ const { Car, validate } = require('../models/cars');
 router.post('/', async (req, res) => {
     let car = new Car(req.body);
 
-    const result = validate(req.body);
+    const result = validate(req.body)
+
+    if (result.error)
+    {
+        res.status(400).json(result.error);
+        return;
+    }
+
     let carSaved = await car.save();
 
     res.location(`/${car._id}`)
     .status(201)
     .json(car);
 
-    // Validate car info
-    if (result.error)
-    {
-        res.status(400).json(result.error);
-        return;
-    }
 
     console.log(carSaved)
 })

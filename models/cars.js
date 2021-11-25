@@ -11,7 +11,6 @@ const carSchema = new mongoose.Schema({
     drivetrain: String,
     body: String,
     imagelink: String,
-    tags: [String]
 })
 
 const Car = mongoose.model('Car', carSchema);
@@ -29,7 +28,6 @@ function validateCar(car) {
         drivetrain: Joi.string().min(3).max(3),
         body: Joi.string(),
         imagelink: Joi.string(),
-        tags: Joi.array().items(Joi.string())
     })
     return Schema.validate(car);
 }
