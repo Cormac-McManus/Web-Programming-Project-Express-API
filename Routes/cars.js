@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const { Model } = require('mongoose');
+const { validJWTNeeded } = require('../Middleware/validationMiddleware');
 const { Car, validate } = require('../models/cars');
 
 
@@ -116,7 +117,8 @@ router.get('/:id', async (req,res) => {
     return;
 })
 
-router.delete('/:id', async (req,res) => {
+//router.delete('/:id', valiJWTNeeded ,async (req,res) => {
+router.delete('/:id',validJWTNeeded,async (req,res) => {
     const id = req.params.id;
     const car = await Car.findByIdAndDelete(id)
     .catch((error)  => 
